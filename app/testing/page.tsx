@@ -20,10 +20,13 @@ export default function TestingPage() {
   const [error, setError] = useState("");
   const [submitting, setSubmitting] = useState(false);
 
-  // Restore anything already captured this session.
+  // Restore anything already captured this session. localStorage is only
+  // available post-mount, so this hydration read belongs in an effect.
   useEffect(() => {
+    /* eslint-disable react-hooks/set-state-in-effect */
     setName(localStorage.getItem("skinstric:name") ?? "");
     setLocation(localStorage.getItem("skinstric:location") ?? "");
+    /* eslint-enable react-hooks/set-state-in-effect */
   }, []);
 
   const value = step === "name" ? name : location;
