@@ -31,6 +31,8 @@ export default function TestingPage() {
 
   const value = step === "name" ? name : location;
   const setValue = step === "name" ? setName : setLocation;
+  const placeholder =
+    step === "name" ? "Introduce Yourself" : "Where are you from?";
 
   function validate(v: string) {
     if (!v.trim()) return "Please enter a value to continue.";
@@ -93,8 +95,11 @@ export default function TestingPage() {
             onKeyDown={(e) => {
               if (e.key === "Enter") proceed();
             }}
-            placeholder={step === "name" ? "Introduce Yourself" : "Where are you from?"}
-            className="w-[340px] max-w-[80vw] border-b border-foreground bg-transparent pb-2 text-center text-3xl font-light tracking-tight outline-none placeholder:text-foreground/40 md:text-5xl"
+            placeholder={placeholder}
+            // Size the field to its text so the underline hugs the content and
+            // the placeholder is never clipped (matches the Figma).
+            size={Math.max((value || placeholder).length, 8)}
+            className="max-w-[90vw] border-b border-foreground bg-transparent pb-2 text-center text-2xl font-light tracking-tight outline-none placeholder:text-foreground/40 sm:text-4xl md:text-5xl"
           />
           {error && <p className="mt-4 text-sm text-red-600">{error}</p>}
         </div>
@@ -111,19 +116,21 @@ export default function TestingPage() {
         <span className="text-xs font-semibold tracking-wide">BACK</span>
       </button>
 
-      <button
-        type="button"
-        onClick={proceed}
-        disabled={submitting}
-        className="group absolute bottom-8 right-4 flex items-center gap-3 disabled:opacity-50 sm:right-8"
-      >
-        <span className="text-xs font-semibold tracking-wide">
-          {submitting ? "SENDING…" : "PROCEED"}
-        </span>
-        <span className="flex h-10 w-10 rotate-45 items-center justify-center border border-foreground transition-colors group-hover:bg-foreground">
-          <FaAngleRight className="-rotate-45 transition-colors group-hover:text-white" />
-        </span>
-      </button>
+      {value.trim() && (
+        <button
+          type="button"
+          onClick={proceed}
+          disabled={submitting}
+          className="group absolute bottom-8 right-4 flex items-center gap-3 disabled:opacity-50 sm:right-8"
+        >
+          <span className="text-xs font-semibold tracking-wide">
+            {submitting ? "SENDING…" : "PROCEED"}
+          </span>
+          <span className="flex h-10 w-10 rotate-45 items-center justify-center border border-foreground transition-colors group-hover:bg-foreground">
+            <FaAngleRight className="-rotate-45 transition-colors group-hover:text-white" />
+          </span>
+        </button>
+      )}
     </main>
   );
 }
