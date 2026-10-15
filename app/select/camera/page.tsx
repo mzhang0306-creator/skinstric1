@@ -128,7 +128,22 @@ export default function CameraPage() {
           >
             <FaCamera /> TAKE PHOTO
           </button>
-        ) : (
+        ) : null}
+
+        {phase === "live" && (
+          <div className="mt-2 text-center">
+            <p className="text-[10px] font-semibold tracking-[0.15em] text-foreground/60">
+              TO GET BETTER RESULTS MAKE SURE TO HAVE
+            </p>
+            <div className="mt-2 flex flex-wrap items-center justify-center gap-x-6 gap-y-1 text-[10px] tracking-[0.1em] text-foreground/70">
+              <span>◇ NEUTRAL EXPRESSION</span>
+              <span>◇ FRONTAL POSE</span>
+              <span>◇ ADEQUATE LIGHTING</span>
+            </div>
+          </div>
+        )}
+
+        {phase === "preview" && (
           <div className="flex items-center gap-4">
             <button
               type="button"
