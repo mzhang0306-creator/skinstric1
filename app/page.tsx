@@ -7,13 +7,10 @@ export default function Home() {
     <main className="relative h-screen overflow-hidden">
       <Header label="INTRO" />
 
-      {/* Oversized faded wordmarks bleeding off each edge */}
-      <span className="pointer-events-none absolute top-1/2 -left-[12%] -translate-y-1/2 select-none text-[22vw] font-semibold uppercase leading-none text-foreground/[0.04]">
-        Skinstric
-      </span>
-      <span className="pointer-events-none absolute top-1/2 -right-[12%] -translate-y-1/2 select-none text-[22vw] font-semibold uppercase leading-none text-foreground/[0.04]">
-        Skinstric
-      </span>
+      {/* Large faint dotted squares bleeding off each edge (inner corner
+          points toward the DISCOVER / TAKE TEST diamonds) */}
+      <span className="pointer-events-none absolute left-0 top-1/2 h-[82vh] w-[82vh] -translate-x-[58%] -translate-y-1/2 rotate-45 border border-dotted border-foreground/20" />
+      <span className="pointer-events-none absolute right-0 top-1/2 h-[82vh] w-[82vh] translate-x-[58%] -translate-y-1/2 rotate-45 border border-dotted border-foreground/20" />
 
       {/* Centered hero */}
       <div className="flex h-full flex-col items-center justify-center text-center">
@@ -45,7 +42,7 @@ export default function Home() {
 
       {/* Bottom-left blurb */}
       <p className="absolute bottom-8 left-4 max-w-xs text-[11px] font-medium uppercase leading-relaxed tracking-wide text-foreground/70 sm:left-8">
-        Skinstric developed an A.I. that creates a highly-personalized routine
+        Skinstric developed an A.I. that creates a highly-personalised routine
         tailored to what your skin needs.
       </p>
     </main>
