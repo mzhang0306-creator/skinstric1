@@ -81,28 +81,37 @@ export default function TestingPage() {
 
       <div className="relative flex h-full items-center justify-center">
         <RotatingDiamonds />
-        <div className="relative z-10 text-center">
-          <p className="mb-3 text-xs tracking-[0.3em] text-foreground/50">
-            CLICK TO TYPE
-          </p>
-          <input
-            autoFocus
-            value={value}
-            onChange={(e) => {
-              setValue(e.target.value);
-              if (error) setError("");
-            }}
-            onKeyDown={(e) => {
-              if (e.key === "Enter") proceed();
-            }}
-            placeholder={placeholder}
-            // Size the field to its text so the underline hugs the content and
-            // the placeholder is never clipped (matches the Figma).
-            size={Math.max((value || placeholder).length, 8)}
-            className="max-w-[90vw] border-b border-foreground bg-transparent pb-2 text-center text-2xl font-light tracking-tight outline-none placeholder:text-foreground/40 sm:text-4xl md:text-5xl"
-          />
-          {error && <p className="mt-4 text-sm text-red-600">{error}</p>}
-        </div>
+        {submitting ? (
+          <div className="relative z-10 flex flex-col items-center gap-4">
+            <span className="h-12 w-12 animate-spin rounded-full border-2 border-foreground/20 border-t-foreground" />
+            <p className="text-xs tracking-[0.3em] text-foreground/60">
+              PROCESSING SUBMISSION
+            </p>
+          </div>
+        ) : (
+          <div className="relative z-10 text-center">
+            <p className="mb-3 text-xs tracking-[0.3em] text-foreground/50">
+              CLICK TO TYPE
+            </p>
+            <input
+              autoFocus
+              value={value}
+              onChange={(e) => {
+                setValue(e.target.value);
+                if (error) setError("");
+              }}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") proceed();
+              }}
+              placeholder={placeholder}
+              // Size the field to its text so the underline hugs the content and
+              // the placeholder is never clipped (matches the Figma).
+              size={Math.max((value || placeholder).length, 8)}
+              className="max-w-[90vw] border-b border-foreground bg-transparent pb-2 text-center text-2xl font-light tracking-tight outline-none placeholder:text-foreground/40 sm:text-4xl md:text-5xl"
+            />
+            {error && <p className="mt-4 text-sm text-red-600">{error}</p>}
+          </div>
+        )}
       </div>
 
       <button
