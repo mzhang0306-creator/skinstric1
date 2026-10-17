@@ -6,6 +6,7 @@ import { FaAngleLeft } from "react-icons/fa6";
 import Header from "@/components/Header";
 import RotatingDiamonds from "@/components/RotatingDiamonds";
 import { submitPhaseTwo } from "@/lib/api";
+import { saveAnalysis } from "@/lib/codes";
 
 // Read a File into a base64 data URL the API can consume.
 function fileToDataUrl(file: File): Promise<string> {
@@ -33,7 +34,7 @@ export default function SelectPage() {
     try {
       const dataUrl = await fileToDataUrl(file);
       const data = await submitPhaseTwo(dataUrl);
-      localStorage.setItem("skinstric:demographics", JSON.stringify(data));
+      saveAnalysis(data);
       router.push("/summary");
     } catch {
       setError("Something went wrong analyzing that image. Please try again.");

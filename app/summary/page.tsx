@@ -13,13 +13,19 @@ import {
   titleCase,
   toPercent,
 } from "@/lib/demographics";
+import { currentCode } from "@/lib/codes";
 
-type Loaded = { data: Demographics; selections: Record<Category, string> };
+type Loaded = {
+  data: Demographics;
+  selections: Record<Category, string>;
+  code: string;
+};
 
 export default function SummaryPage() {
   const router = useRouter();
   const [loaded, setLoaded] = useState<Loaded | null>(null);
   const [active, setActive] = useState<Category>("race");
+  const [copied, setCopied] = useState(false);
 
   // Load the analysis saved by the upload/selfie flow. No data -> go choose a source.
   useEffect(() => {
@@ -33,7 +39,11 @@ export default function SummaryPage() {
       // One-time hydration read: localStorage is only available post-mount,
       // so this must happen in an effect rather than a lazy initializer.
       // eslint-disable-next-line react-hooks/set-state-in-effect
-      setLoaded({ data: parsed, selections: defaultSelections(parsed) });
+      setLoaded({
+        data: parsed,
+        selections: defaultSelections(parsed),
+        code: currentCode(),
+      });
     } catch {
       router.replace("/select");
     }
@@ -46,7 +56,17 @@ export default function SummaryPage() {
   );
 
   if (!loaded) return null;
-  const { data: dataLoaded, selections } = loaded;
+  const { data: dataLoaded, selections, code } = loaded;
+
+  function copyCode() {
+    navigator.clipboard?.writeText(code).then(
+      () => {
+        setCopied(true);
+        window.setTimeout(() => setCopied(false), 1500);
+      },
+      () => {}
+    );
+  }
 
   const selectedKey = selections[active];
   const selectedPct = toPercent(dataLoaded[active][selectedKey] ?? 0);
@@ -83,6 +103,25 @@ export default function SummaryPage() {
         <p className="mt-2 text-[10px] font-semibold tracking-[0.1em] text-foreground/60">
           PREDICTED RACE &amp; AGE
         </p>
+
+        {code && (
+          <div className="mt-3 flex items-center gap-3">
+            <span className="text-[10px] font-semibold tracking-[0.1em] text-foreground/60">
+              CODE
+            </span>
+            <span className="font-mono text-sm tracking-[0.2em]">{code}</span>
+            <button
+              type="button"
+              onClick={copyCode}
+              className="border border-foreground px-3 py-1 text-[9px] font-semibold tracking-[0.1em] transition-colors hover:bg-foreground hover:text-white"
+            >
+              {copied ? "COPIED" : "COPY"}
+            </button>
+            <span className="text-[10px] text-foreground/40">
+              Use this in &ldquo;Enter Code&rdquo; to revisit later.
+            </span>
+          </div>
+        )}
       </div>
 
       <div className="mt-6 grid flex-1 grid-cols-1 gap-px border-t border-foreground/15 px-4 sm:px-8 lg:grid-cols-[minmax(0,240px)_1fr_minmax(0,360px)] lg:gap-0">

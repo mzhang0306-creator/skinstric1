@@ -1,4 +1,5 @@
 import Link from "next/link";
+import EnterCode from "@/components/EnterCode";
 
 export default function Header({ label = "INTRO" }: { label?: string }) {
   return (
@@ -11,12 +12,7 @@ export default function Header({ label = "INTRO" }: { label?: string }) {
           [ {label} ]
         </span>
       </div>
-      <button
-        type="button"
-        className="bg-foreground px-3 py-2 text-[10px] font-semibold tracking-[0.15em] text-white"
-      >
-        ENTER CODE
-      </button>
+      <EnterCode />
     </header>
   );
 }

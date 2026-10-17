@@ -6,6 +6,7 @@ import { FaAngleLeft, FaCamera, FaArrowRotateLeft } from "react-icons/fa6";
 import Header from "@/components/Header";
 import RotatingDiamonds from "@/components/RotatingDiamonds";
 import { submitPhaseTwo } from "@/lib/api";
+import { saveAnalysis } from "@/lib/codes";
 
 type Phase = "live" | "preview" | "analyzing";
 
@@ -70,7 +71,7 @@ export default function CameraPage() {
     setPhase("analyzing");
     try {
       const data = await submitPhaseTwo(shot);
-      localStorage.setItem("skinstric:demographics", JSON.stringify(data));
+      saveAnalysis(data);
       router.push("/summary");
     } catch {
       setError("Analysis failed. Please retake the photo and try again.");
